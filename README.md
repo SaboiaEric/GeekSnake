@@ -14,10 +14,12 @@ FASE 1 - CONSTRUÇÃO DO PROJETO
 - Adicionar teclas de movimentações no objeto cobra
 - Adicionar movimentação dentro da matriz do objeto cobra
 - Adicionar movimentação e posicionar a câmera dentro do plano do jogo
+
 FASE 2 - COLISÕES E LIMITAÇÕES
 - Fazer a cobra passar por cima das letras
 - Limitar a movimentação da cobra dentro da matriz
 - Adicionar colisão da cobra com ela mesmo
+
 FASE 3 - PONTUAÇÃO
 - Adicionar verificação quando a cobra passar por uma letra correta e incorreta da palavra instanciada na tela.
 - Se passar na ordem correta adicionar uma pequena mensagem de sucesso
@@ -26,6 +28,7 @@ FASE 3 - PONTUAÇÃO
 - Adicionar temporizador na tela
 - Adicionar limite de temporizador
 - Adicionar pontuação na tela
+
 FASE 4 - TELAS DE TRANSAÇÕES (INICIALIZAÇÃO E FINALIZAÇÃO)
 - Adicionar tela de abertura
 - Adicionar tela de encerramento 
