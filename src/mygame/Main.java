@@ -1,5 +1,7 @@
 package mygame;
 
+import com.google.gson.GsonBuilder;
+import com.google.gson.Gson;
 import com.jme3.app.SimpleApplication;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
@@ -28,6 +30,11 @@ public class Main extends SimpleApplication implements ScreenController {
 
     @Override
     public void simpleInitApp() {
+        GsonBuilder builder = new GsonBuilder().setPrettyPrinting();
+        Palavra targetObject = new Gson().fromJson("Dicionario/palavras.json", Palavra.class);
+        
+        System.out.println(targetObject);
+
         Box b = new Box(10f, 10f, 0.1f);
         Geometry geom = new Geometry("Box", b);
         geom.setLocalTranslation(0f, 0f, layerFundo);

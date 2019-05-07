@@ -2,7 +2,7 @@
 <nifty>
   <screen id="start" controller="jme3test.niftygui.TestNiftyGui">
     <layer id="layer" backgroundColor="#0000" childLayout="center">
-      <panel id="panel" height="25%" width="35%" align="center" valign="center" backgroundColor="#f60f" childLayout="center" visibleToMouse="true">
+      <panel id="panel" height="10%" width="100%" align="right" valign="top" backgroundColor="#f60f" childLayout="center" visibleToMouse="true">
         <interact onClick="quit()"/>
         <effect>
           <onStartScreen name="move" mode="in" direction="top" length="300" startDelay="0" inherit="true"/>
