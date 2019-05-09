@@ -2,6 +2,10 @@ package mygame;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.jme3.app.SimpleApplication;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
@@ -12,7 +16,14 @@ import com.jme3.niftygui.NiftyJmeDisplay;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import java.util.List;
+import model.Palavra;
 /**
  * This is the Main Class of your Game. You should only do initialization here.
  * Move your Logic into AppStates or Controls
@@ -30,10 +41,25 @@ public class Main extends SimpleApplication implements ScreenController {
 
     @Override
     public void simpleInitApp() {
-        GsonBuilder builder = new GsonBuilder().setPrettyPrinting();
-        Palavra targetObject = new Gson().fromJson("Dicionario/palavras.json", Palavra.class);
         
-        System.out.println(targetObject);
+        Palavra dicionario = new Palavra();
+        JsonParser jsonParser = new JsonParser();
+        try{
+            FileReader reader = new FileReader("C:\\Users\\Edson\\Documents\\GIT\\ProjetoComputacaoGraficaIISnake\\assets\\Dicionario\\palavras.json");
+            
+            Object obj = jsonParser.parse(reader);
+            
+            JsonArray palavrasList = (JsonArray) obj;
+            
+            for (JsonElement jsonElement : palavrasList) {
+                JsonObject jsonObj = jsonElement.getAsJsonObject();
+                dicionario.addPalavra(jsonObj.get("palavra").getAsString());
+            }
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println(dicionario.To_String());
 
         Box b = new Box(10f, 10f, 0.1f);
         Geometry geom = new Geometry("Box", b);
