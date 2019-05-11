@@ -9,6 +9,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.jme3.input.KeyInput;
+import com.jme3.input.MouseInput;
+import com.jme3.input.controls.KeyTrigger;
+import com.jme3.input.controls.MouseButtonTrigger;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.render.TextRenderer;
@@ -51,4 +55,5 @@ public class Util {
         Element elementToFill = nifty.getCurrentScreen().findElementById(elementoID);
         elementToFill.getRenderer(TextRenderer.class).setText( stringAlteracao );
     }
+    
 }

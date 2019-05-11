@@ -6,7 +6,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.jme3.animation.LoopMode;
 import com.jme3.app.SimpleApplication;
+import com.jme3.input.KeyInput;
+import com.jme3.input.MouseInput;
+import com.jme3.input.controls.KeyTrigger;
+import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.renderer.RenderManager;
@@ -24,6 +29,9 @@ import java.io.FileReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.jme3.input.controls.AnalogListener;
+import com.jme3.math.FastMath;
+import com.jme3.scene.Spatial;
 import java.util.List;
 import model.Palavra;
 import service.Util;
@@ -48,6 +56,7 @@ public class Main extends SimpleApplication implements ScreenController {
     public static float segundo = 0.0f;
     public static float score = 0.0f;
     public static float speed = 1.0f;
+    public static int acaoUsuario = 0;
 
     @Override
     public void simpleInitApp() {
@@ -82,6 +91,8 @@ public class Main extends SimpleApplication implements ScreenController {
         //flyCam.setEnabled(false);
         //flyCam.setDragToRotate(true);
         inputManager.setCursorVisible(true);
+        
+        initKeys();
     }
 
     @Override
@@ -93,6 +104,20 @@ public class Main extends SimpleApplication implements ScreenController {
             score += 1;
             segundo = 0.0f;
             Util.TrocarTextoGUI(nifty, "tempo", String.valueOf(score));
+            
+            if (acaoUsuario == KeyInput.KEY_UP) {
+                System.out.println("UP");
+                
+            }else if (acaoUsuario == KeyInput.KEY_DOWN) {
+                System.out.println("DOWN");
+                
+            }else if (acaoUsuario == KeyInput.KEY_RIGHT) {
+                System.out.println("RIGHT");
+                
+            }else if (acaoUsuario == KeyInput.KEY_LEFT) {
+                System.out.println("LEFT");
+                
+            }
         }
         
         //troca a palavra
@@ -125,4 +150,39 @@ public class Main extends SimpleApplication implements ScreenController {
         nifty.gotoScreen("end");
     }
     
+    private final AnalogListener analogListener = new AnalogListener() {
+        @Override
+        public void onAnalog(String name, float value, float tpf) {
+                
+            if (name.equals("UP")) {
+                acaoUsuario = KeyInput.KEY_UP;
+                
+            } else if(name.equals("DOWN")){
+                acaoUsuario = KeyInput.KEY_DOWN;
+                
+            }else if(name.equals("RIGHT")){
+                acaoUsuario = KeyInput.KEY_RIGHT;
+                
+            } else if(name.equals("LEFT")){
+                acaoUsuario = KeyInput.KEY_LEFT;
+                
+            } else if(name.equals("DOWN")){
+                acaoUsuario = KeyInput.KEY_DOWN;
+                
+            }
+             else {
+                System.out.println("Press P to unpause.");
+            }
+        }
+    };
+    private void initKeys() {
+        // You can map one or several inputs to one named action
+        inputManager.addMapping("UP",  new KeyTrigger(KeyInput.KEY_UP));
+        inputManager.addMapping("DOWN",  new KeyTrigger(KeyInput.KEY_DOWN));
+        inputManager.addMapping("RIGHT",  new KeyTrigger(KeyInput.KEY_RIGHT));
+        inputManager.addMapping("LEFT",  new KeyTrigger(KeyInput.KEY_LEFT));
+        
+        // Add the names to the action listener.
+        inputManager.addListener(analogListener, "UP", "DOWN", "RIGHT","LEFT");
+    }
 }
