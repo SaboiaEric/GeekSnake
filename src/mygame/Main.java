@@ -14,6 +14,8 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Box;
 import com.jme3.niftygui.NiftyJmeDisplay;
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.elements.Element;
+import de.lessvoid.nifty.elements.render.TextRenderer;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import java.io.BufferedReader;
@@ -24,6 +26,8 @@ import java.util.logging.Logger;
 
 import java.util.List;
 import model.Palavra;
+import service.Util;
+
 /**
  * This is the Main Class of your Game. You should only do initialization here.
  * Move your Logic into AppStates or Controls
@@ -38,34 +42,25 @@ public class Main extends SimpleApplication implements ScreenController {
     
     final float layerFundo = -10f;
     private Nifty nifty;
+    
+    private Palavra dicionario;
+    
+    public static float segundo = 0.0f;
+    public static float score = 0.0f;
+    public static float speed = 1.0f;
 
     @Override
     public void simpleInitApp() {
         
-        Palavra dicionario = new Palavra();
-        JsonParser jsonParser = new JsonParser();
-        try{
-            FileReader reader = new FileReader("C:\\Users\\Edson\\Documents\\GIT\\ProjetoComputacaoGraficaIISnake\\assets\\Dicionario\\palavras.json");
-            
-            Object obj = jsonParser.parse(reader);
-            
-            JsonArray palavrasList = (JsonArray) obj;
-            
-            for (JsonElement jsonElement : palavrasList) {
-                JsonObject jsonObj = jsonElement.getAsJsonObject();
-                dicionario.addPalavra(jsonObj.get("palavra").getAsString());
-            }
+        String path = System.getProperty("user.dir");
 
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        dicionario = Util.CarregarJSON(path);
         System.out.println(dicionario.To_String());
-
+        
         Box b = new Box(10f, 10f, 0.1f);
         Geometry geom = new Geometry("Box", b);
         geom.setLocalTranslation(0f, 0f, layerFundo);
         
-
         Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", ColorRGBA.Blue);
         geom.setMaterial(mat);
@@ -92,6 +87,18 @@ public class Main extends SimpleApplication implements ScreenController {
     @Override
     public void simpleUpdate(float tpf) {
         //TODO: add update code
+        segundo += tpf;
+        
+        if (segundo>1-speed*0.1){
+            score += 1;
+            segundo = 0.0f;
+            Util.TrocarTextoGUI(nifty, "tempo", String.valueOf(score));
+        }
+        
+        //troca a palavra
+        if (score%10 == 0){
+            Util.TrocarTextoGUI(nifty, "text", String.valueOf(dicionario.getPalavras().get((int) (score%dicionario.getPalavras().size()))));
+        }
     }
 
     @Override
