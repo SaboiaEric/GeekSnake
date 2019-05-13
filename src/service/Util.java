@@ -13,6 +13,7 @@ import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
+import com.jme3.scene.Geometry;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.render.TextRenderer;
@@ -55,5 +56,12 @@ public class Util {
         Element elementToFill = nifty.getCurrentScreen().findElementById(elementoID);
         elementToFill.getRenderer(TextRenderer.class).setText( stringAlteracao );
     }
+    /*
+    public static void PlayerMove(Geometry player, int acaoPlayer, int playerX, int playerY){
+        Element elementToFill = nifty.getCurrentScreen().findElementById(elementoID);
+        elementToFill.getRenderer(TextRenderer.class).setText( stringAlteracao );
+    }
+    */
+
     
 }
