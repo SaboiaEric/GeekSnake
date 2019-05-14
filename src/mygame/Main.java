@@ -56,7 +56,7 @@ public class Main extends SimpleApplication implements ScreenController {
     public static boolean running = true;
     public static float segundo = 0.0f;
     public static float score = 0.0f;
-    public static float speed = 1.0f;
+    public static float speed = 8.0f;
     public static int acaoUsuario = 0;
     public static int maxX=11;
     public static int maxY=11;
@@ -97,7 +97,7 @@ public class Main extends SimpleApplication implements ScreenController {
         guiViewPort.addProcessor(niftyDisplay);
 
         // disable the fly cam
-        //flyCam.setEnabled(false);
+        flyCam.setEnabled(false);
         //flyCam.setDragToRotate(true);
         inputManager.setCursorVisible(true);
         
