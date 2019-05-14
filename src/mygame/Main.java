@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.jme3.animation.LoopMode;
 import com.jme3.app.SimpleApplication;
+import com.jme3.font.BitmapText;
 import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.KeyTrigger;
@@ -33,6 +34,7 @@ import com.jme3.input.controls.AnalogListener;
 import com.jme3.math.FastMath;
 import com.jme3.scene.Spatial;
 import java.util.List;
+import java.util.Random;
 import model.Palavra;
 import service.Util;
 
@@ -54,15 +56,17 @@ public class Main extends SimpleApplication implements ScreenController {
     private Palavra dicionario;
     
     public static boolean running = true;
+    public static boolean primeiroFrame = true;
     public static float segundo = 0.0f;
     public static float score = 0.0f;
-    public static float speed = 8.0f;
+    public static float speed = 1.0f;
     public static int acaoUsuario = 0;
     public static int maxX=11;
     public static int maxY=11;
     public static int playerX=5;
     public static int playerY=5;
     public static Geometry[][] matrix;
+    public Random gerador;
     
 
     @Override
@@ -82,7 +86,7 @@ public class Main extends SimpleApplication implements ScreenController {
         Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", ColorRGBA.Blue);
         geom.setMaterial(mat);
-
+        
         rootNode.attachChild(geom);
         
         NiftyJmeDisplay niftyDisplay = NiftyJmeDisplay.newNiftyJmeDisplay(
@@ -114,6 +118,7 @@ public class Main extends SimpleApplication implements ScreenController {
             rootNode.attachChild(g);
         }
         
+        gerador = new Random();
         
         Material matCentro = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         matCentro.setColor("Color", ColorRGBA.Green);
@@ -122,6 +127,10 @@ public class Main extends SimpleApplication implements ScreenController {
         
         centro.setMaterial(matCentro);
         acaoUsuario = KeyInput.KEY_UP;
+        
+        
+        guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
+
     }
     public Geometry Fase(){
         Box b = new Box(0.5f, .5f, 0.1f);
@@ -136,41 +145,71 @@ public class Main extends SimpleApplication implements ScreenController {
 
     @Override
     public void simpleUpdate(float tpf) {
-        //TODO: add update code
-        if(running){
-            segundo += tpf;
         
-            if (segundo>1-speed*0.1){
-                score += 1;
-                segundo = 0.0f;
-                Util.TrocarTextoGUI(nifty, "tempo", String.valueOf(score));
+        if (primeiroFrame){
+            
+            String[] palavra = dicionario.getPalavras().get(0).split("(?!^)");
+            
+            for(String p : palavra){
+                int x = gerador.nextInt(maxX);
+                int y = gerador.nextInt(maxY);
+                
+                BitmapText helloText = new BitmapText(guiFont, false);
+                
+                //helloText = new BitmapText(guiFont, false);
 
-                if (acaoUsuario == KeyInput.KEY_UP) {
-                    saiuTale();
-                    playerY += 1;
-                    entrouTale();
+                helloText.setSize(guiFont.getCharSet().getRenderedSize());
+                helloText.setText(p);
+                //rootNode.getChild(p).x
+                        
+                //helloText.setLocalTranslation(300, helloText.getLineHeight(), 0);
+                System.out.println(matrix[x][y].getLocalTransform().getTranslation().x);
+                System.out.println(matrix[x][y].getLocalTransform().getTranslation().y);
+                System.out.println(matrix[x][y].getLocalTransform().getTranslation().z);
+                helloText.setLocalTranslation(matrix[x][y].getLocalTransform().getTranslation().x, matrix[x][y].getLocalTransform().getTranslation().y, 10);
 
-                }else if (acaoUsuario == KeyInput.KEY_DOWN) {
-                    saiuTale();
-                    playerY -= 1;
-                    entrouTale();
+                guiNode.attachChild(helloText);
+            }
+            
 
-                }else if (acaoUsuario == KeyInput.KEY_RIGHT) {
-                    saiuTale();
-                    playerX += 1;
-                    entrouTale();
+            primeiroFrame=false;
+        }else{
+            if(running){
+                segundo += tpf;
 
-                }else if (acaoUsuario == KeyInput.KEY_LEFT) {
-                    saiuTale();
-                    playerX -= 1;
-                    entrouTale();                
+                if (segundo>1-speed*0.1){
+                    score += 1;
+                    segundo = 0.0f;
+                    Util.TrocarTextoGUI(nifty, "tempo", String.valueOf(score));
+
+                    if (acaoUsuario == KeyInput.KEY_UP) {
+                        saiuTale();
+                        playerY += 1;
+                        entrouTale();
+
+                    }else if (acaoUsuario == KeyInput.KEY_DOWN) {
+                        saiuTale();
+                        playerY -= 1;
+                        entrouTale();
+
+                    }else if (acaoUsuario == KeyInput.KEY_RIGHT) {
+                        saiuTale();
+                        playerX += 1;
+                        entrouTale();
+
+                    }else if (acaoUsuario == KeyInput.KEY_LEFT) {
+                        saiuTale();
+                        playerX -= 1;
+                        entrouTale();                
+                    }
                 }
+                //troca a palavra
+                //if (score%10 == 0){
+                //    Util.TrocarTextoGUI(nifty, "text", String.valueOf(dicionario.getPalavras().get((int) (score%dicionario.getPalavras().size()))));
+                //}
             }
+        //TODO: add update code
 
-            //troca a palavra
-            if (score%10 == 0){
-                Util.TrocarTextoGUI(nifty, "text", String.valueOf(dicionario.getPalavras().get((int) (score%dicionario.getPalavras().size()))));
-            }
         }
 
     }
