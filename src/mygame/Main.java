@@ -58,8 +58,8 @@ public class Main extends SimpleApplication implements ScreenController {
     public static boolean running = true;
     public static boolean primeiroFrame = true;
     public static float segundo = 0.0f;
-    public static float score = 0.0f;
-    public static float speed = 1.0f;
+    public static float tempo = 0.0f;
+    public static float speed = 2.0f;
     public static int acaoUsuario = 0;
     public static int maxX=11;
     public static int maxY=11;
@@ -67,6 +67,11 @@ public class Main extends SimpleApplication implements ScreenController {
     public static int playerY=5;
     public static Geometry[][] matrix;
     public Random gerador;
+    
+    private int fase=0;
+    private boolean terminou=false;
+    private boolean pontuou=false;
+    public static float score = 0.0f;
     
 
     @Override
@@ -130,6 +135,10 @@ public class Main extends SimpleApplication implements ScreenController {
         
         
         guiFont = assetManager.loadFont("Interface/Fonts/Default.fnt");
+        
+        
+        Util.TrocarTextoGUI(nifty, "tempo", "Tempo: 0[s]");
+        Util.TrocarTextoGUI(nifty, "score", "Score: 0[letras]");
 
     }
     public Geometry Fase(){
@@ -148,39 +157,32 @@ public class Main extends SimpleApplication implements ScreenController {
         
         if (primeiroFrame){
             
+            Util.TrocarTextoGUI(nifty, "text", String.valueOf(dicionario.getPalavras().get(0)));
             String[] palavra = dicionario.getPalavras().get(0).split("(?!^)");
             
             for(String p : palavra){
                 int x = gerador.nextInt(maxX);
                 int y = gerador.nextInt(maxY);
                 
-                BitmapText helloText = new BitmapText(guiFont, false);
+                Material mat = new Material(assetManager,"Common/MatDefs/Misc/Unshaded.j3md");
+                mat.setTexture("ColorMap",assetManager.loadTexture("Textures/"+p.toUpperCase()+".png"));
+
+                matrix[x][y].setMaterial(mat);
                 
-                //helloText = new BitmapText(guiFont, false);
-
-                helloText.setSize(guiFont.getCharSet().getRenderedSize());
-                helloText.setText(p);
-                //rootNode.getChild(p).x
-                        
-                //helloText.setLocalTranslation(300, helloText.getLineHeight(), 0);
-                System.out.println(matrix[x][y].getLocalTransform().getTranslation().x);
-                System.out.println(matrix[x][y].getLocalTransform().getTranslation().y);
-                System.out.println(matrix[x][y].getLocalTransform().getTranslation().z);
-                helloText.setLocalTranslation(matrix[x][y].getLocalTransform().getTranslation().x, matrix[x][y].getLocalTransform().getTranslation().y, 10);
-
-                guiNode.attachChild(helloText);
+                terminou = false;
+                
             }
             
-
             primeiroFrame=false;
         }else{
             if(running){
                 segundo += tpf;
 
                 if (segundo>1-speed*0.1){
-                    score += 1;
+                    tempo += 1;
                     segundo = 0.0f;
-                    Util.TrocarTextoGUI(nifty, "tempo", String.valueOf(score));
+                    Util.TrocarTextoGUI(nifty, "tempo", "Tempo: "+String.valueOf(tempo)+"[s]");
+                    Util.TrocarTextoGUI(nifty, "score", "Score: "+String.valueOf(score)+"[letras]");
 
                     if (acaoUsuario == KeyInput.KEY_UP) {
                         saiuTale();
@@ -203,15 +205,18 @@ public class Main extends SimpleApplication implements ScreenController {
                         entrouTale();                
                     }
                 }
-                //troca a palavra
-                //if (score%10 == 0){
-                //    Util.TrocarTextoGUI(nifty, "text", String.valueOf(dicionario.getPalavras().get((int) (score%dicionario.getPalavras().size()))));
-                //}
             }
-        //TODO: add update code
-
         }
-
+        
+        if (pontuou){
+            score+=1;
+            Util.TrocarTextoGUI(nifty, "score", String.valueOf(tempo));
+        }
+        
+        if (terminou){
+            fase += 1;
+            Util.TrocarTextoGUI(nifty, "text", String.valueOf(dicionario.getPalavras().get(fase)));
+        }
     }
 
     public void saiuTale(){

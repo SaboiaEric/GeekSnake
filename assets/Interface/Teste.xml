@@ -11,8 +11,11 @@
         </effect>
         <text id="text" font="aurulent-sans-16.fnt" color="#000f" text="Banana" align="center" valign="center" />
       </panel>
-      <panel id="panelTempo" height="10%" width="100%" align="left" valign="bottom" backgroundColor="#f60f" childLayout="center" visibleToMouse="true">
-        <text id="tempo" font="aurulent-sans-16.fnt" color="#000f" text="0" align="center" valign="center" />
+      <panel id="panelScore" height="10%" width="50%" align="right" valign="bottom" backgroundColor="#f60f" childLayout="center" visibleToMouse="true">
+        <text id="score" font="aurulent-sans-16.fnt" color="#000f" text="" align="center" valign="center" />
+      </panel>
+      <panel id="panelTempo" height="10%" width="50%" align="left" valign="bottom" backgroundColor="#f60f" childLayout="center" visibleToMouse="true">
+        <text id="tempo" font="aurulent-sans-16.fnt" color="#000f" text="" align="center" valign="center" />
       </panel>
     </layer>
   </screen>
