@@ -184,27 +184,23 @@ public class Main extends SimpleApplication implements ScreenController {
                     Util.TrocarTextoGUI(nifty, "tempo", "Tempo: "+String.valueOf(tempo)+"[s]");
                     Util.TrocarTextoGUI(nifty, "score", "Score: "+String.valueOf(score)+"[letras]");
 
+                    if(running)
+                    saiuTale();
                     if (acaoUsuario == KeyInput.KEY_UP) {
-                        saiuTale();
                         playerY += 1;
-                        entrouTale();
-
                     }else if (acaoUsuario == KeyInput.KEY_DOWN) {
-                        saiuTale();
                         playerY -= 1;
-                        entrouTale();
-
                     }else if (acaoUsuario == KeyInput.KEY_RIGHT) {
-                        saiuTale();
                         playerX += 1;
-                        entrouTale();
-
                     }else if (acaoUsuario == KeyInput.KEY_LEFT) {
-                        saiuTale();
                         playerX -= 1;
-                        entrouTale();                
                     }
+
+                    if(running)
+                        entrouTale();                
                 }
+            }else{
+                System.out.println("TERMINOU!!!");
             }
         }
         
@@ -212,13 +208,19 @@ public class Main extends SimpleApplication implements ScreenController {
             score+=1;
             Util.TrocarTextoGUI(nifty, "score", String.valueOf(tempo));
         }
-        
+
         if (terminou){
             fase += 1;
             Util.TrocarTextoGUI(nifty, "text", String.valueOf(dicionario.getPalavras().get(fase)));
         }
     }
 
+    public void colisao(){
+        if( 0 < playerX && playerX > maxX-1 || 0<playerY && playerY > maxY-1 ){
+            running = false;
+        }
+    }
+    
     public void saiuTale(){
         Spatial centro = rootNode.getChild("x"+playerX+"y"+playerY);
         Material saiu = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
@@ -226,10 +228,6 @@ public class Main extends SimpleApplication implements ScreenController {
         centro.setMaterial(saiu);
     }
     public void entrouTale(){
-        if(0<playerX&&playerX>maxX ||
-            0<playerY&&playerY>maxY){
-            running = false;
-        }
         if (running){
             Spatial centro = rootNode.getChild("x"+playerX+"y"+playerY);
             Material entrou = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
