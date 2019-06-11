@@ -61,10 +61,10 @@ public class Main extends SimpleApplication implements ScreenController {
     public static float tempo = 0.0f;
     public static float speed = 2.0f;
     public static int acaoUsuario = 0;
-    public static int maxX=11;
-    public static int maxY=11;
-    public static int playerX=5;
-    public static int playerY=5;
+    public static int maxX=9;
+    public static int maxY=9;
+    public static int playerX=4;
+    public static int playerY=4;
     public static Geometry[][] matrix;
     public Random gerador;
     
@@ -116,7 +116,7 @@ public class Main extends SimpleApplication implements ScreenController {
         
         for (;k<maxX*maxY;k++){
             Geometry  g= Fase();
-            g.setLocalTranslation(k/maxX*1.5f-8f, k%maxX*1.5f-8f, layerFundo+1);
+            g.setLocalTranslation(k/maxX*1.25f-8f, k%maxX*1.25f-5f, layerFundo+1);
             g.setName("x"+(k/maxX) +"y"+(k%maxX));
             matrix[k/maxX][k%maxX] = g;
                 
@@ -226,8 +226,9 @@ public class Main extends SimpleApplication implements ScreenController {
         centro.setMaterial(saiu);
     }
     public void entrouTale(){
-        if(0<playerX&&playerX>maxX ||
-            0<playerY&&playerY>maxY){
+        if(
+            playerX<0 || playerX>maxX-1 ||
+            playerY<0 || playerY>maxY-1){
             running = false;
         }
         if (running){
