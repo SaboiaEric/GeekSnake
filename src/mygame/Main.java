@@ -230,6 +230,8 @@ public class Main extends SimpleApplication implements ScreenController {
             playerX<0 || playerX>maxX-1 ||
             playerY<0 || playerY>maxY-1){
             running = false;
+            Util.TrocarTextoGUI(nifty, "text", String.valueOf("!!!!FIM DO JOGO!!!!"));
+
         }
         if (running){
             Spatial centro = rootNode.getChild("x"+playerX+"y"+playerY);
